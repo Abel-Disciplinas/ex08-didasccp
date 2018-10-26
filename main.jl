@@ -26,8 +26,10 @@ end
 
 
 function main()
-    A=readcsv("dados2.csv")
-
+    A=readcsv("dados.csv")
+    x=A[:,1]
+    y=A[:,2]   
+    
     kfold(x, y)
 
     p = 4 ####### Sua escolha
