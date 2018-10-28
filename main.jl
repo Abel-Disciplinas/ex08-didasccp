@@ -45,7 +45,7 @@ function main()
     for i=1:m
         y_pred[1,i]= β[1]
         for j=2:p+1
-            y_pred[1,i] = y_pred[1,i]+β[p]*x[i]^(j-1)
+            y_pred[1,i] = y_pred[1,i]+β[j]*x[i]^(j-1)
         end
     end
     
