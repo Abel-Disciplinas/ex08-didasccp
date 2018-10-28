@@ -22,9 +22,6 @@ function separa_matriz(A,i,j)
     return B, C
 end
 
-
-
-
 function main()
     A=readcsv("dados.csv")
     x=A[:,1]
@@ -42,8 +39,27 @@ function main()
     scatter(x, y, ms=3, c=:blue)
     plot!(xlin, ylin, c=:red, lw=2)
     png("ajuste")
-
-    # Calcule a medida R²
+    
+    m=length(x)
+    y_pred=zeros(1,m)
+    for i=1:m
+        y_pred[1,i]= β[1]
+        for j=2:p+1
+            y_pred[1,i] = y_pred[1,i]+β[p]*x[i]^(j-1)
+        end
+    end
+    
+    y_med = mean(y)
+    soma1=0;
+    soma2=0;
+    
+    for i=1:m
+        soma1 = soma1 + (y_pred[1,i]-y_med)^2
+        soma2 = soma2 + (y[i]-y_pred[1,i])^2
+    end
+    
+    R2 = 1- soma2/soma1
+    
 end
 
 function reg_poly(x, y, p)
@@ -143,13 +159,16 @@ function kfold(x,y; num_folds=5, max_p = 15)
         end
     end
     
-    #gráficos para cada fold; fixe i entre 1 e num_folds:
-    vetor = [1:max_p]
+    #gráficos para cada fold; fixe j entre 1 e num_folds:
+    v = zeros(1,max_p)
+    for i=1:max_p
+        v[1,i]=i;
+    end
     
-    i=1;
+    j=1;
     
-    scatter(v, Erro_TR[i,:], c:= red)
-    scatter!(v, Erro_TE[i,:], c:=blue)
+    scatter(v[1,:], Erro_TR[j,:], c=: red)
+    scatter!(v[1,:], Erro_TE[j,:], c=:blue, yaxis=[0,0.001])
     
     #gráfico das medias
     
@@ -161,8 +180,8 @@ function kfold(x,y; num_folds=5, max_p = 15)
         Media_TE[1,i] = mean(Erro_TE[:,i])
     end
     
-    scatter(v, Media_TR[1,:], c:= red)
-    scatter!(v, Media_TE[1,:], c:=blue)    
+    scatter(v[1,:], Media_TR[1,:], c= :red)
+    scatter!(v[1,:], Media_TE[1,:], c=:blue, yaxis=[0,0.001])    
        
     return ErroTR, ErroTE
     
