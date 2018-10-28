@@ -143,8 +143,29 @@ function kfold(x,y; num_folds=5, max_p = 15)
         end
     end
     
+    #gráficos para cada fold; fixe i entre 1 e num_folds:
+    vetor = [1:max_p]
+    
+    i=1;
+    
+    scatter(v, Erro_TR[i,:], c:= red)
+    scatter!(v, Erro_TE[i,:], c:=blue)
+    
+    #gráfico das medias
+    
+    Media_TR=zeros(1,max_p)
+    Media_TE=zeros(1,max_p)
+    
+    for i=1:max_p
+        Media_TR[1,i] = mean(Erro_TR[:,i])
+        Media_TE[1,i] = mean(Erro_TE[:,i])
+    end
+    
+    scatter(v, Media_TR[1,:], c:= red)
+    scatter!(v, Media_TE[1,:], c:=blue)    
+       
     return ErroTR, ErroTE
-
+    
     png("kfold")
 end
 
